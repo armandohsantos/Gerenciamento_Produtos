@@ -5,6 +5,7 @@ import Cabecalho from './components/Cabecalho.vue'
 import { useNavegacaoStore } from './store/navegacaoStore';
 import ConsultaEstoque from './components/ConsultaEstoque.vue';
 import Modificacao_usuario from './components/Modificacao_usuario.vue';
+import Menu from './components/Menu.vue';
 
 // const dados = ref([])
 
@@ -37,8 +38,15 @@ const navegacaoStore = useNavegacaoStore();
 
 </script>
 
-<template class="flex">
-  <Cabecalho />
+<template>
+   <Cabecalho />
+  <div class="flex">
+   
+    <Menu />
 <ConsultaEstoque v-if="navegacaoStore.paginaAtual=='Pesquisar'" />
-<Modificacao_usuario v-if="navegacaoStore.paginaAtual=='Add_um_frasco'" />
+<Modificacao_usuario v-if="navegacaoStore.paginaAtual=='Add_um_frasco' || navegacaoStore.paginaAtual=='Editar_o_frasco'" />
+  </div>
+  
   </template>
+
+

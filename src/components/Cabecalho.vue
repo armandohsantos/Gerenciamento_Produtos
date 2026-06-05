@@ -1,14 +1,9 @@
 <template>
-    <header class="cabecalho">
-        <h1 class="text-red-600">LABSTOCK: Gerenciamento de Reagentes Químicos</h1>
-        <h2>Estoque do Laboratório de Química</h2>
-        <nav>
-        <ul>
-            <li><button @click="navegacaoStore.setPaginaAtual('Pesquisar')">Consultar estoque</button></li>
-            <li><button @click="navegacaoStore.setPaginaAtual('Add_um_frasco')">Adicionar Novo Reagente</button></li>
-            <li><button @click="navegacaoStore.setPaginaAtual('Emitir_Relatório')">Emitir Relatório</button></li>
-        </ul>
-        </nav>
+    <header class="cabecalho m-5">
+
+        <h1 class="text-2xl font-bold azul_claro">LABSTOCK: Gerenciamento de Reagentes Químicos</h1>
+        <h2 class="text-xl">Estoque do Laboratório de Química</h2>
+        
     </header>
 </template>
 
