@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useNavegacaoStore } from './navegacaoStore'
 import { supabase } from '../lib/supabaseClient'
 
+
 export const useReagenteStore = defineStore('reagente', () => {
 
     const quantidade = ref(0)
@@ -13,7 +14,7 @@ export const useReagenteStore = defineStore('reagente', () => {
     const validade_do_reagente = ref(null)
     const id = ref(null)
     const quantidade_inicial = ref(0)
-  
+    const navegacaoStore = useNavegacaoStore();
 
     function carregarReagente(quantidade_recebida, localizacao_recebida, CAS_recebido, nome_do_reagente_recebido, formula_do_reagente_recebida, validade_do_reagente_recebida, id_recebido) {
         quantidade.value = quantidade_recebida;
@@ -68,7 +69,27 @@ export const useReagenteStore = defineStore('reagente', () => {
             alert('Dados do reagente atualizados com sucesso!');
         }
             
-    return { quantidade, localizacao, carregarReagente, CAS, nome_do_reagente, formula_do_reagente, validade_do_reagente,atualizarDadosReagente,inserir_Reagente, id, quantidade_inicial }        
+
+        function limparDadosReagente() {
+            quantidade.value = 0;
+            localizacao.value = '';
+            CAS.value = '';
+            nome_do_reagente.value = '';
+            formula_do_reagente.value = '';
+            validade_do_reagente.value = null;
+            id.value = null;
+            quantidade_inicial.value = 0;
+        }
+
+    function encontrarReagentePeloNome() {
+    const nome = nome_do_reagente.value
+    const reagenteEncontrado = navegacaoStore.listaTiposReagentes.find(r => r.reagente === nome)
+if (reagenteEncontrado) {
+    CAS.value = reagenteEncontrado.cas_number
+    formula_do_reagente.value = reagenteEncontrado.formula_molecular    
+}
+}
+    return { quantidade, localizacao, carregarReagente, CAS, nome_do_reagente, formula_do_reagente, validade_do_reagente,atualizarDadosReagente,inserir_Reagente, id, quantidade_inicial, limparDadosReagente, encontrarReagentePeloNome }        
 }) 
 
 

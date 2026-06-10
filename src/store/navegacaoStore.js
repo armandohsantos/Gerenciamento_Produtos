@@ -8,6 +8,44 @@ export const useNavegacaoStore = defineStore('navegacao', () => {
   const carregando = ref(false)
   const erro = ref(null)
   const listaTabelaEstoque = ref([])
+  const listaTiposReagentes = ref([])
+  const carregamentoTiposReagentes = ref(false)
+  const erroTiposReagentes = ref(null)
+  
+
+    const fetchTiposReagentes = async () => {
+    // Evita fazer uma nova requisição se já houver dados carregados (opcional)
+    if (listaTiposReagentes.value.length > 0) 
+      return 
+
+    carregamentoTiposReagentes.value = true
+    erroTiposReagentes.value = null
+
+    try {
+      const { data, error: supabaseError } = await supabase
+        .from('tb_tipos_reagentes') 
+        
+        .select(`
+          *
+        `)
+
+
+
+      if (supabaseError) throw supabaseError
+
+      listaTiposReagentes.value = data
+    } catch (err) {
+      erroTiposReagentes.value = err.message
+      console.error('Erro ao buscar dados no Pinia:', err)
+    } finally {
+      carregamentoTiposReagentes.value = false
+    }
+  }
+
+
+
+
+
   const setPaginaAtual = (pagina) => {
     paginaAtual.value = pagina
 
@@ -46,6 +84,6 @@ export const useNavegacaoStore = defineStore('navegacao', () => {
   }
 
  
-  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens }
+  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens, listaTiposReagentes, fetchTiposReagentes, carregamentoTiposReagentes, erroTiposReagentes }
 })
 

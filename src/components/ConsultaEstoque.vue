@@ -31,6 +31,7 @@ const reagenteStore = useReagenteStore();
 
 onMounted(() => {
   navegacaoStore.fetchItens()
+  navegacaoStore.fetchTiposReagentes()
 })
 
 

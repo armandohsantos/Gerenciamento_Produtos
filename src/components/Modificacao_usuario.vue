@@ -10,7 +10,12 @@
     </div>
     <div class="flex flex-col">
         <label for="nome_do_reagente">Nome do Reagente</label> 
-        <input class="bg-gray-900 border border-black" id = "nome_do_reagente" type="text" v-model="reagenteStore.nome_do_reagente" disabled> 
+        <select class="bg-gray-900 border border-black" id = "nome_do_reagente" v-model="reagenteStore.nome_do_reagente" @blur = "mostrarMensagem()"> 
+            <option value="">Selecione um reagente</option>
+            <option v-for="tipo in navegacaoStore.listaTiposReagentes" :key="tipo.id" :value="tipo.reagente">
+                {{ tipo.reagente }}
+            </option>
+        </select>
     </div>
     <div class="flex flex-col">
         <label for="formula_do_reagente">Fórmula do Reagente</label> 
@@ -75,6 +80,9 @@ import {useReagenteStore} from '../store/reagenteStore';
 const reagenteStore = useReagenteStore();
 const navegacaoStore = useNavegacaoStore();
 
+function mostrarMensagem() {
+    console.log('EVENTO FUNCIONANDO')
+}
 function salvar () { 
    
     
