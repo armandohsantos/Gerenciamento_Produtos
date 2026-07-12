@@ -11,7 +11,11 @@ export const useNavegacaoStore = defineStore('navegacao', () => {
   const listaTiposReagentes = ref([])
   const carregamentoTiposReagentes = ref(false)
   const erroTiposReagentes = ref(null)
-  
+ const erroBuscaLocalizacao = ref(null)
+  const listaLocalizacoesSupabase = ref([])
+  const localLimpo = ref([])
+  const listaLocalEscolhidoFiltrado = ref([])
+  const localEscolhido = ref('')
 
     const fetchTiposReagentes = async () => {
     // Evita fazer uma nova requisição se já houver dados carregados (opcional)
@@ -42,7 +46,31 @@ export const useNavegacaoStore = defineStore('navegacao', () => {
     }
   }
 
+const fetchLocalizacoes = async () => {
+    if (listaLocalizacoesSupabase.value.length > 0) 
+      return 
 
+    erroBuscaLocalizacao.value = null
+
+    try {
+      const { data, error: supabaseError } = await supabase
+        .from('tb_ref_local') 
+        
+        .select(`
+          *
+        `)
+
+
+
+      if (supabaseError) throw supabaseError
+
+      listaLocalizacoesSupabase.value = data
+      localLimpo.value = [...new Set(listaLocalizacoesSupabase.value.map(item => item.local))]
+    } catch (err) {
+      erroBuscaLocalizacao.value = err.message
+      console.error('Erro ao buscar localizações no Supabase:', err)
+    } 
+  }
 
 
 
@@ -65,8 +93,8 @@ export const useNavegacaoStore = defineStore('navegacao', () => {
         .select(`
           *,
           tb_tipos_reagentes (
-            cas_number,
-            formula_molecular,
+            CASNumbr,
+            ForMolcl,
             reagente)
         `)
 
@@ -82,8 +110,13 @@ export const useNavegacaoStore = defineStore('navegacao', () => {
       carregando.value = false
     }
   }
+  function localizacaoFiltra(){
+    if (localEscolhido.value=='') return
+    listaLocalEscolhidoFiltrado.value = listaLocalizacoesSupabase.value.filter(item => item.local === localEscolhido.value)
+
+  } 
 
  
-  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens, listaTiposReagentes, fetchTiposReagentes, carregamentoTiposReagentes, erroTiposReagentes }
+  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens, listaTiposReagentes, fetchTiposReagentes, carregamentoTiposReagentes, erroTiposReagentes, listaLocalizacoesSupabase, fetchLocalizacoes, localLimpo, localEscolhido, listaLocalEscolhidoFiltrado, localizacaoFiltra, }
 })
 

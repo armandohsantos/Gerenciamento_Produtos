@@ -7,7 +7,7 @@ import { supabase } from '../lib/supabaseClient'
 export const useReagenteStore = defineStore('reagente', () => {
 
     const quantidade = ref(0)
-    const localizacao = ref('')
+    const localizacao = ref(null)
     const CAS = ref('') 
     const nome_do_reagente = ref('')
     const formula_do_reagente = ref('')
@@ -15,6 +15,7 @@ export const useReagenteStore = defineStore('reagente', () => {
     const id = ref(null)
     const quantidade_inicial = ref(0)
     const navegacaoStore = useNavegacaoStore();
+    const unidade = ref(''); 
 
     function carregarReagente(quantidade_recebida, localizacao_recebida, CAS_recebido, nome_do_reagente_recebido, formula_do_reagente_recebida, validade_do_reagente_recebida, id_recebido) {
         quantidade.value = quantidade_recebida;
@@ -28,12 +29,16 @@ export const useReagenteStore = defineStore('reagente', () => {
         navegacaoStore.setPaginaAtual('Editar_o_frasco');
     }
     async function inserir_Reagente() {
+        console.log(unidade.value)
+        console.log(localizacao.value)
+        const localizacaoString = localizacao.value ? String(localizacao.value) : null;
         const {data, error} = await supabase.from('tb_estoque').insert([{
-            id_reagente: 6,
+            CASNumbr: CAS.value,
             validade: validade_do_reagente.value,
-            local: localizacao.value,
+            cod_local: 'LD-CAP-PRA01',
+
             quantidade: String(quantidade.value),
-            unidade: 'g',
+            unidade: unidade.value,
             Quantidade_Inicial: quantidade_inicial.value,
 
         }]).select();
@@ -54,7 +59,7 @@ export const useReagenteStore = defineStore('reagente', () => {
         const {data, error} = await supabase.from ('tb_estoque').update({
             quantidade: String(quantidade.value)
             ,
-            local: localizacao.value, }).eq('id', Number(id.value))
+            cod_local: localizacao.value, }).eq('id', Number(id.value))
             .select();
             if (error)
                  {
@@ -81,15 +86,16 @@ export const useReagenteStore = defineStore('reagente', () => {
             quantidade_inicial.value = 0;
         }
 
+
     function encontrarReagentePeloNome() {
-    const nome = nome_do_reagente.value
-    const reagenteEncontrado = navegacaoStore.listaTiposReagentes.find(r => r.reagente === nome)
-if (reagenteEncontrado) {
-    CAS.value = reagenteEncontrado.cas_number
-    formula_do_reagente.value = reagenteEncontrado.formula_molecular    
-}
-}
-    return { quantidade, localizacao, carregarReagente, CAS, nome_do_reagente, formula_do_reagente, validade_do_reagente,atualizarDadosReagente,inserir_Reagente, id, quantidade_inicial, limparDadosReagente, encontrarReagentePeloNome }        
+        const nome = nome_do_reagente.value
+        const reagenteEncontrado = navegacaoStore.listaTiposReagentes.find(r => r.reagente === nome)
+        if (reagenteEncontrado) {
+            CAS.value = reagenteEncontrado.CASNumbr
+            formula_do_reagente.value = reagenteEncontrado.ForMolcl    
+        }
+    }
+    return { quantidade, localizacao, carregarReagente, CAS, nome_do_reagente, formula_do_reagente, validade_do_reagente,atualizarDadosReagente,inserir_Reagente, id, quantidade_inicial, limparDadosReagente, encontrarReagentePeloNome, unidade }        
 }) 
 
 
