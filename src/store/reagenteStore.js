@@ -17,13 +17,27 @@ export const useReagenteStore = defineStore('reagente', () => {
     const navegacaoStore = useNavegacaoStore();
     const unidade = ref(''); 
 
-    function carregarReagente(quantidade_recebida, localizacao_recebida, CAS_recebido, nome_do_reagente_recebido, formula_do_reagente_recebida, validade_do_reagente_recebida, id_recebido) {
+    function limparCamposReagente() {
+        quantidade.value = 0;
+        localizacao.value = null;
+        CAS.value = '';
+        nome_do_reagente.value = '';
+        formula_do_reagente.value = '';
+        validade_do_reagente.value = null;
+        id.value = null;
+        quantidade_inicial.value = 0;
+        unidade.value = '';
+    }
+
+    function carregarReagente(quantidade_recebida, localizacao_recebida, CAS_recebido, nome_do_reagente_recebido, formula_do_reagente_recebida, validade_do_reagente_recebida, id_recebido,unidade_recebida,quantidade_inicial_recebida) {
         quantidade.value = quantidade_recebida;
+        quantidade_inicial.value = quantidade_inicial_recebida;
         localizacao.value = localizacao_recebida;
         CAS.value = CAS_recebido;
         nome_do_reagente.value = nome_do_reagente_recebido;
         formula_do_reagente.value = formula_do_reagente_recebida;
         validade_do_reagente.value = validade_do_reagente_recebida;
+        unidade.value = unidade_recebida;
         id.value = id_recebido;
         const navegacaoStore = useNavegacaoStore();
         navegacaoStore.setPaginaAtual('Editar_o_frasco');
@@ -35,13 +49,16 @@ export const useReagenteStore = defineStore('reagente', () => {
         const {data, error} = await supabase.from('tb_estoque').insert([{
             CASNumbr: CAS.value,
             validade: validade_do_reagente.value,
-            cod_local: 'LD-CAP-PRA01',
+            cod_local: localizacaoString,
 
             quantidade: String(quantidade.value),
             unidade: unidade.value,
             Quantidade_Inicial: quantidade_inicial.value,
 
         }]).select();
+        limparCamposReagente();
+        const navegacaoStore = useNavegacaoStore();
+        navegacaoStore.limparLocalEscolhido();
         if (error) {
             console.error('Error inserting new reagente:', error);
             return;

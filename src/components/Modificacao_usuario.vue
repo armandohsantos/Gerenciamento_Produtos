@@ -6,11 +6,11 @@
 <div class="grid grid-cols-1 gap-4 m-3">
     <div class="flex flex-col"> 
         <label for="CAS_NUMBER"> Número CAS :</label> 
-        <input class="bg-gray-900 border border-black" id = "CAS_NUMBER" type="text" v-model="reagenteStore.CAS" placeholder=" digite apenas números">
+        <input class="bg-gray-900 border border-black" id = "CAS_NUMBER" :disabled="navegacaoStore.paginaAtual=='Editar_o_frasco'" type="text" v-model="reagenteStore.CAS" placeholder=" digite apenas números">
     </div>
     <div class="flex flex-col">
         <label for="nome_do_reagente">Nome do Reagente</label> 
-        <select class="bg-gray-900 border border-black" id = "nome_do_reagente" v-model="reagenteStore.nome_do_reagente" @change = "reagenteStore.encontrarReagentePeloNome"> 
+        <select class="bg-gray-900 border border-black"  :disabled="navegacaoStore.paginaAtual=='Editar_o_frasco'" id = "nome_do_reagente" v-model="reagenteStore.nome_do_reagente" @change = "reagenteStore.encontrarReagentePeloNome"> 
             <option value="">Selecione um reagente</option>
             <option v-for="tipo in navegacaoStore.listaTiposReagentes" :key="tipo.id" :value="tipo.reagente">
                 {{ tipo.reagente }}
@@ -19,11 +19,11 @@
     </div>
     <div class="flex flex-col">
         <label for="formula_do_reagente">Fórmula do Reagente</label> 
-        <input class="bg-gray-900 border border-black" id = "formula_do_reagente" type="text" v-model="reagenteStore.formula_do_reagente" disabled> 
+        <input class="bg-gray-900 border border-black" :disabled="navegacaoStore.paginaAtual=='Editar_o_frasco'" id = "formula_do_reagente" type="text" v-model="reagenteStore.formula_do_reagente" disabled> 
     </div>
     <div class="flex flex-col">
         <label for="validade_do_reagente">Validade do Reagente</label> 
-        <input class="bg-gray-900 border border-black" id = "validade_do_reagente" type="date" v-model="reagenteStore.validade_do_reagente" > 
+        <input class="bg-gray-900 border border-black" id = "validade_do_reagente" :disabled="navegacaoStore.paginaAtual=='Editar_o_frasco'" type="date" v-model="reagenteStore.validade_do_reagente" > 
     </div>
     
      

@@ -10,12 +10,13 @@
         </tr>
     </thead>
     <tbody>
-        <tr class = "azul_claro_hover cursor-pointer" v-for="reagente in navegacaoStore.listaTabelaEstoque" :key="reagente.id" @click="reagenteStore.carregarReagente(reagente.quantidade, reagente.local, reagente.tb_tipos_reagentes.CAS, reagente.tb_tipos_reagentes.reagente, reagente.tb_tipos_reagentes.ForMolcl, reagente.validade, reagente.id)">
+        <tr class = "azul_claro_hover cursor-pointer" v-for="reagente in navegacaoStore.listaTabelaEstoque" :key="reagente.id" @click="reagenteStore.carregarReagente(reagente.quantidade, reagente.cod_local, reagente.tb_tipos_reagentes.CASNumbr, reagente.tb_tipos_reagentes.reagente, reagente.tb_tipos_reagentes.ForMolcl, reagente.validade, reagente.id, reagente.unidade, reagente.Quantidade_Inicial);navegacaoStore.carregarLocalReagente(reagente.tb_ref_local.local)"> 
             
 
             <td class="border border-gray-500 py-2 px-5">{{ reagente.tb_tipos_reagentes.reagente }}</td>
             <td class="border border-gray-500 py-2 px-5">{{ reagente.quantidade + ' ' + reagente.unidade }}</td>
-            <td class="border border-gray-500 py-2 px-5">{{ reagente.local }}</td>
+            <td class="border border-gray-500 py-2 px-5">{{ reagente?.tb_ref_local?.local??'' }}</td>
+            
         </tr>
     </tbody>
 </table>

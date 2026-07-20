@@ -11,11 +11,21 @@ export const useNavegacaoStore = defineStore('navegacao', () => {
   const listaTiposReagentes = ref([])
   const carregamentoTiposReagentes = ref(false)
   const erroTiposReagentes = ref(null)
- const erroBuscaLocalizacao = ref(null)
+  const erroBuscaLocalizacao = ref(null)
   const listaLocalizacoesSupabase = ref([])
   const localLimpo = ref([])
   const listaLocalEscolhidoFiltrado = ref([])
   const localEscolhido = ref('')
+
+    function limparLocalEscolhido() {
+        localEscolhido.value = '';
+        listaLocalEscolhidoFiltrado.value = [];
+    }
+
+    function carregarLocalReagente(local_recebido) {
+        localEscolhido.value = local_recebido;
+        localizacaoFiltra();
+    }         
 
     const fetchTiposReagentes = async () => {
     // Evita fazer uma nova requisição se já houver dados carregados (opcional)
@@ -95,7 +105,8 @@ const fetchLocalizacoes = async () => {
           tb_tipos_reagentes (
             CASNumbr,
             ForMolcl,
-            reagente)
+            reagente), 
+          tb_ref_local ( local, prateleira)
         `)
 
 
@@ -117,6 +128,6 @@ const fetchLocalizacoes = async () => {
   } 
 
  
-  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens, listaTiposReagentes, fetchTiposReagentes, carregamentoTiposReagentes, erroTiposReagentes, listaLocalizacoesSupabase, fetchLocalizacoes, localLimpo, localEscolhido, listaLocalEscolhidoFiltrado, localizacaoFiltra, }
+  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens, listaTiposReagentes, fetchTiposReagentes, carregamentoTiposReagentes, erroTiposReagentes, listaLocalizacoesSupabase, fetchLocalizacoes, localLimpo, localEscolhido, listaLocalEscolhidoFiltrado, localizacaoFiltra,limparLocalEscolhido, carregarLocalReagente, }
 })
 
