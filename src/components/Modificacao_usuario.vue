@@ -10,12 +10,15 @@
     </div>
     <div class="flex flex-col">
         <label for="nome_do_reagente">Nome do Reagente</label> 
-        <select class="bg-gray-900 border border-black"  :disabled="navegacaoStore.paginaAtual=='Editar_o_frasco'" id = "nome_do_reagente" v-model="reagenteStore.nome_do_reagente" @change = "reagenteStore.encontrarReagentePeloNome"> 
+        <select class="bg-gray-900 border border-black"  :disabled="navegacaoStore.paginaAtual=='Editar_o_frasco'" id = "nome_do_reagente" v-model="reagenteStore.nome_do_reagente" @change = "reagenteStore.encontrarReagentePeloNome" @blur="v$.nome_do_reagente.$touch"> 
             <option value="">Selecione um reagente</option>
             <option v-for="tipo in navegacaoStore.listaTiposReagentes" :key="tipo.id" :value="tipo.reagente">
                 {{ tipo.reagente }}
             </option>
         </select>
+        <span v-if="v$.nome_do_reagente.$error" class="erro">
+          {{ v$.nome_do_reagente.$errors[0].$message }}
+        </span>
     </div>
     <div class="flex flex-col">
         <label for="formula_do_reagente">Fórmula do Reagente</label> 
@@ -73,6 +76,7 @@
 </div>
 <div class="text-center mb-2">
     <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 border border-gray-600 rounded azul_claro_hover cursor-pointer" @click="salvar()">Salvar</button>
+    <button class="bg-gray-700 hover:bg-red-600 text-white font-bold py-2 px-4 border border-gray-600 rounded cursor-pointer" @click.prevent="excluir()">Excluir</button>
 </div>
 
     </div>
@@ -85,17 +89,42 @@
 <script setup lang="js">
 import { useNavegacaoStore } from '../store/navegacaoStore';
 import {useReagenteStore} from '../store/reagenteStore';
+import { useVuelidate } from '@vuelidate/core';
+import { helpers, required } from '@vuelidate/validators';
+
 const reagenteStore = useReagenteStore();
 const navegacaoStore = useNavegacaoStore();
+
+const rules = {
+  
+    CAS: { required },
+    nome_do_reagente: { required: helpers.withMessage('O nome do reagente é obrigatório.', required) },
+    formula_do_reagente: { required },
+    validade_do_reagente: { required },
+    localizacao: { required },
+    quantidade: { required },
+    unidade: { required },
+    quantidade_inicial: { required } 
+  
+};
+
+const v$ = useVuelidate( rules , reagenteStore);
 
 function mostrarMensagem() {
     console.log('EVENTO FUNCIONANDO')
 }
-function salvar () { 
+async function salvar () { 
+const formularioValido = await v$.value.$validate()
+if (!formularioValido) {
+    alert('Por favor, corrija os erros no formulário.')
+    return
+  }
    
     
   if (navegacaoStore.paginaAtual == 'Editar_o_frasco') {
     reagenteStore.atualizarDadosReagente();
+
+
 
   }
 else {
@@ -108,7 +137,22 @@ function debugg() {
     console.log(navegacaoStore.listaLocalEscolhidoFiltrado);
   }
 
+// função de excluir reagentes quando já existe na consulta estoque e caso contrário não será possível excluir, pois não existe na tb estoque do SB só limpar;
+function excluir() {
+   
 
+if (navegacaoStore.paginaAtual == 'Editar_o_frasco') {
+    reagenteStore.excluirReagente();
+    reagenteStore.limparCamposReagente();
+    
+
+    navegacaoStore.RecarregarPaginaListaReagente();
+}
+else {
+    reagenteStore.limparCamposReagente();
+    navegacaoStore.setPaginaAtual('Consulta_estoque');
+}
+}
 
 
 
@@ -116,3 +160,5 @@ function debugg() {
 
 
 </script>
+
+

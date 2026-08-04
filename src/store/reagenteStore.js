@@ -28,7 +28,7 @@ export const useReagenteStore = defineStore('reagente', () => {
         quantidade_inicial.value = 0;
         unidade.value = '';
     }
-
+// essa função pega os dados de uma linha do fecth para carregar permitindo edição do usuário;
     function carregarReagente(quantidade_recebida, localizacao_recebida, CAS_recebido, nome_do_reagente_recebido, formula_do_reagente_recebida, validade_do_reagente_recebida, id_recebido,unidade_recebida,quantidade_inicial_recebida) {
         quantidade.value = quantidade_recebida;
         quantidade_inicial.value = quantidade_inicial_recebida;
@@ -41,20 +41,20 @@ export const useReagenteStore = defineStore('reagente', () => {
         id.value = id_recebido;
         const navegacaoStore = useNavegacaoStore();
         navegacaoStore.setPaginaAtual('Editar_o_frasco');
+
     }
+    //adição de reagente para a tb estoque do SB;
     async function inserir_Reagente() {
-        console.log(unidade.value)
-        console.log(localizacao.value)
         const localizacaoString = localizacao.value ? String(localizacao.value) : null;
         const {data, error} = await supabase.from('tb_estoque').insert([{
             CASNumbr: CAS.value,
             validade: validade_do_reagente.value,
             cod_local: localizacaoString,
-
-            quantidade: String(quantidade.value),
+             quantidade: String(quantidade.value),
             unidade: unidade.value,
             Quantidade_Inicial: quantidade_inicial.value,
 
+            // logica após o insert para verificação do sucesso da inserção e limpeza dos campos do reagente;
         }]).select();
         limparCamposReagente();
         const navegacaoStore = useNavegacaoStore();
@@ -69,10 +69,8 @@ export const useReagenteStore = defineStore('reagente', () => {
         }
         alert('Novo reagente inserido com sucesso!');
     }
-
+// seção de atualização de reagente para a tb estoque do SB;
     async function atualizarDadosReagente() {
-        console.log(id.value)
-        console.log(quantidade.value)
         const {data, error} = await supabase.from ('tb_estoque').update({
             quantidade: String(quantidade.value)
             ,
@@ -91,6 +89,28 @@ export const useReagenteStore = defineStore('reagente', () => {
             alert('Dados do reagente atualizados com sucesso!');
         }
             
+        async function excluirReagente() {
+
+            const {data, error} = await supabase.from ('tb_estoque').update({
+            deleted_at: new Date().toISOString()
+            ,
+            }).eq('id', Number(id.value))
+            .select();
+            if (error)
+                 {
+
+                console.error('Error excluir reagente data:', error);
+            return;
+            }
+        if (!data || data.length === 0) {
+            console.error('Nenhum reagente foi encontrado ');
+            return;
+        }
+            alert('Dados do reagente excluídos com sucesso!');
+        
+
+        }
+
 
         function limparDadosReagente() {
             quantidade.value = 0;
@@ -112,8 +132,9 @@ export const useReagenteStore = defineStore('reagente', () => {
             formula_do_reagente.value = reagenteEncontrado.ForMolcl    
         }
     }
-    return { quantidade, localizacao, carregarReagente, CAS, nome_do_reagente, formula_do_reagente, validade_do_reagente,atualizarDadosReagente,inserir_Reagente, id, quantidade_inicial, limparDadosReagente, encontrarReagentePeloNome, unidade }        
-}) 
+    return { quantidade, localizacao, carregarReagente, CAS, nome_do_reagente, formula_do_reagente, validade_do_reagente,atualizarDadosReagente,inserir_Reagente, id, quantidade_inicial, limparDadosReagente, encontrarReagentePeloNome, unidade, excluirReagente, limparCamposReagente }        
+} 
+)
 
 
 
