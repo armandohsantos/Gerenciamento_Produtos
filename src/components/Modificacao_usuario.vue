@@ -75,7 +75,7 @@
     </div>
 </div>
 <div class="text-center mb-2">
-    <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 border border-gray-600 rounded azul_claro_hover cursor-pointer" @click="salvar()">Salvar</button>
+    <button class="bg-gray-700 text-white font-bold py-2 px-4 border border-gray-600 rounded azul_claro_hover cursor-pointer" @click="salvar()">Salvar</button>
     <button class="bg-gray-700 hover:bg-red-600 text-white font-bold py-2 px-4 border border-gray-600 rounded cursor-pointer" @click.prevent="excluir()">Excluir</button>
 </div>
 

@@ -6,6 +6,8 @@ import { useNavegacaoStore } from './store/navegacaoStore';
 import ConsultaEstoque from './components/ConsultaEstoque.vue';
 import Modificacao_usuario from './components/Modificacao_usuario.vue';
 import Menu from './components/Menu.vue';
+import Login from './components/Login.vue';
+import LogOut from './components/LogOut.vue';
 
 // const dados = ref([])
 
@@ -39,13 +41,20 @@ const navegacaoStore = useNavegacaoStore();
 </script>
 
 <template>
+  <div class="flex w-full justify-between">
    <Cabecalho />
-  <div class="flex">
-   
+   <LogOut v-if="navegacaoStore.autenticado==true" />
+
+
+   </div>
+  <div v-if="navegacaoStore.autenticado==true" class="flex">
+    
+
     <Menu />
 <ConsultaEstoque v-if="navegacaoStore.paginaAtual=='Pesquisar'" />
 <Modificacao_usuario v-if="navegacaoStore.paginaAtual=='Add_um_frasco' || navegacaoStore.paginaAtual=='Editar_o_frasco'" />
   </div>
+  <Login v-else />
   
   </template>
 

@@ -16,6 +16,7 @@ export const useNavegacaoStore = defineStore('navegacao', () => {
   const localLimpo = ref([]) //conjunto de dados não repetidos da coluna local da tb ref local do SB, para que seja possivel mostrar apenas os locais sem repetição na tela de pesquisa no caso do coluna local do reagente;
   const listaLocalEscolhidoFiltrado = ref([]) //armazena os prateleiras dos locais escolhidos pelo usuário para no select local do reagente;
   const localEscolhido = ref('') // armazena o local escolhido pelo usuário para no select local do reagente;
+  const autenticado = ref(false) // variavel que armazena se o usuário está autenticado ou não, para permitir o acesso a tela de pesquisa e cadastro de reagentes;
 
     function limparLocalEscolhido() {
         localEscolhido.value = '';
@@ -140,6 +141,6 @@ const fetchLocalizacoes = async () => {
   } 
 
  
-  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens, listaTiposReagentes, fetchTiposReagentes, carregamentoTiposReagentes, erroTiposReagentes, listaLocalizacoesSupabase, fetchLocalizacoes, localLimpo, localEscolhido, listaLocalEscolhidoFiltrado, localizacaoFiltra,limparLocalEscolhido, carregarLocalReagente, RecarregarPaginaListaReagente }
+  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens, listaTiposReagentes, fetchTiposReagentes, carregamentoTiposReagentes, erroTiposReagentes, listaLocalizacoesSupabase, fetchLocalizacoes, localLimpo, localEscolhido, listaLocalEscolhidoFiltrado, localizacaoFiltra,limparLocalEscolhido, carregarLocalReagente, RecarregarPaginaListaReagente, autenticado }
 })
 
