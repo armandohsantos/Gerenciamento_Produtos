@@ -1,5 +1,6 @@
 <template>
-    <div class="border-1 border-gray-700 my-0.5 bg-gray-700"> 
+    <div v-if="navegacaoStore.listaTabelaEstoqueFiltrada.length > 0"
+     class="border-1 border-gray-700 my-0.5 bg-gray-700"> 
 <h3 class="bg-gray-500 p-3">Estoque Disponível</h3 >
 <table class="m-3 table-fixed border-collapse border border-gray-500">
     <thead>
@@ -10,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr class = "azul_claro_hover cursor-pointer" v-for="reagente in navegacaoStore.listaTabelaEstoque" :key="reagente.id" @click="reagenteStore.carregarReagente(reagente.quantidade, reagente.cod_local, reagente.tb_tipos_reagentes.CASNumbr, reagente.tb_tipos_reagentes.reagente, reagente.tb_tipos_reagentes.ForMolcl, reagente.validade, reagente.id, reagente.unidade, reagente.Quantidade_Inicial);navegacaoStore.carregarLocalReagente(reagente.tb_ref_local.local)"> 
+        <tr class = "azul_claro_hover cursor-pointer" v-for="reagente in navegacaoStore.listaTabelaEstoqueFiltrada" :key="reagente.id" @click="reagenteStore.carregarReagente(reagente.quantidade, reagente.cod_local, reagente.tb_tipos_reagentes.CASNumbr, reagente.tb_tipos_reagentes.reagente, reagente.tb_tipos_reagentes.ForMolcl, reagente.validade, reagente.id, reagente.unidade, reagente.Quantidade_Inicial);navegacaoStore.carregarLocalReagente(reagente.tb_ref_local.local)"> 
             
 
             <td class="border border-gray-500 py-2 px-5">{{ reagente.tb_tipos_reagentes.reagente }}</td>

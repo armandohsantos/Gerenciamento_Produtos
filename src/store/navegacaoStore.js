@@ -17,7 +17,8 @@ export const useNavegacaoStore = defineStore('navegacao', () => {
   const listaLocalEscolhidoFiltrado = ref([]) //armazena os prateleiras dos locais escolhidos pelo usuário para no select local do reagente;
   const localEscolhido = ref('') // armazena o local escolhido pelo usuário para no select local do reagente;
   const autenticado = ref(false) // variavel que armazena se o usuário está autenticado ou não, para permitir o acesso a tela de pesquisa e cadastro de reagentes;
-
+  const listaTabelaEstoqueFiltrada = ref([]) // armazena a lista de reagentes filtrada pelo usuário, para mostrar na tela de pesquisa;
+  const semResultados = ref(false) // variavel que armazena se a lista de reagentes filtrada pelo usuário está vazia ou não, para mostrar uma mensagem de "sem resultados" na tela de pesquisa;
     function limparLocalEscolhido() {
         localEscolhido.value = '';
         listaLocalEscolhidoFiltrado.value = []; // limpar os dados das prateleiras filtradas quando o local escolhido for limpo;              
@@ -140,7 +141,23 @@ const fetchLocalizacoes = async () => {
 
   } 
 
- 
-  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens, listaTiposReagentes, fetchTiposReagentes, carregamentoTiposReagentes, erroTiposReagentes, listaLocalizacoesSupabase, fetchLocalizacoes, localLimpo, localEscolhido, listaLocalEscolhidoFiltrado, localizacaoFiltra,limparLocalEscolhido, carregarLocalReagente, RecarregarPaginaListaReagente, autenticado }
+ function filtrarListaTabelaEstoquePorCAS(cas) {
+    
+      const casFiltrado = String(cas).replace(/-/g, '');
+      listaTabelaEstoqueFiltrada.value = listaTabelaEstoque.value.filter(item => item.CASNumbr == casFiltrado);
+      console.log('Lista filtrada por CAS:', listaTabelaEstoqueFiltrada.value);
+      semResultados.value = listaTabelaEstoqueFiltrada.value.length === 0;
+    
+  }
+function filtrarListaTabelaEstoquePorNome(nome) {
+  const nomeFiltrado= String(nome).trim().toLowerCase();
+      listaTabelaEstoqueFiltrada.value = listaTabelaEstoque.value.filter(item => item.tb_tipos_reagentes.reagente.trim().toLowerCase().includes(nomefiltrado));
+      
+      semResultados.value = listaTabelaEstoqueFiltrada.value.length === 0;
+
+}
+
+
+  return { paginaAtual, setPaginaAtual, listaTabelaEstoque, fetchItens, listaTiposReagentes, fetchTiposReagentes, carregamentoTiposReagentes, erroTiposReagentes, listaLocalizacoesSupabase, fetchLocalizacoes, localLimpo, localEscolhido, listaLocalEscolhidoFiltrado, localizacaoFiltra,limparLocalEscolhido, carregarLocalReagente, RecarregarPaginaListaReagente, autenticado,listaTabelaEstoqueFiltrada, semResultados, carregando, erro, erroBuscaLocalizacao, filtrarListaTabelaEstoquePorCAS, filtrarListaTabelaEstoquePorNome }
 })
 
