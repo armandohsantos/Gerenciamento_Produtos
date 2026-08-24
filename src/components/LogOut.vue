@@ -9,6 +9,8 @@
 import { useNavegacaoStore } from '../store/navegacaoStore';
 const navegacaoStore = useNavegacaoStore(); 
 function logout() {
+    navegacaoStore.listaTabelaEstoqueFiltrada = [] // Limpa a lista de reagentes filtrada
+    navegacaoStore.semResultados = false // Limpa a variável semResultados
     
     navegacaoStore.autenticado = false; // Defina a variável de autenticação como falsa
 }

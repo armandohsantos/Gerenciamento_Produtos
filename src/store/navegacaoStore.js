@@ -95,6 +95,8 @@ const fetchLocalizacoes = async () => {
 
 
   const setPaginaAtual = (pagina) => { // função setPaginaAtual que recebe a pagina que o usuário selecionou e atualiza a var paginaAtual para renderizar a página correta;
+    listaTabelaEstoqueFiltrada.value = [] // limpa a lista de reagentes filtrada quando o usuário muda de página, para evitar que a lista filtrada fique na tela de pesquisa quando o usuário muda de página;
+    semResultados.value = false // limpa a variavel semResultados quando o usuário muda de página, para evitar que a mensagem de "sem resultados" fique na tela de pesquisa quando o usuário muda de página;  
     paginaAtual.value = pagina
 
   }
@@ -151,7 +153,7 @@ const fetchLocalizacoes = async () => {
   }
 function filtrarListaTabelaEstoquePorNome(nome) {
   const nomeFiltrado= String(nome).trim().toLowerCase();
-      listaTabelaEstoqueFiltrada.value = listaTabelaEstoque.value.filter(item => item.tb_tipos_reagentes.reagente.trim().toLowerCase().includes(nomefiltrado));
+      listaTabelaEstoqueFiltrada.value = listaTabelaEstoque.value.filter(item => item.tb_tipos_reagentes.reagente.trim().toLowerCase().includes(nomeFiltrado));
       
       semResultados.value = listaTabelaEstoqueFiltrada.value.length === 0;
 
