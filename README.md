@@ -1,4 +1,4 @@
-# LabStock 🧪
+# LabAHStock 🧪
 
 **LabStock** é um Minimum Viable Product (MVP) desenvolvido para o gerenciamento eficiente, rastreabilidade e otimização de reagentes químicos em almoxarifados de ensino e laboratórios de pesquisa (como o Laboratório Maker do IQ-USP). 
 
