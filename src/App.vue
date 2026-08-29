@@ -9,6 +9,7 @@ import Menu from './components/Menu.vue';
 import Login from './components/Login.vue';
 import LogOut from './components/LogOut.vue';
 import FiltroPesquisa from './components/FiltroPesquisa.vue';
+import CatalogoSubstancia from './components/CatalogoSubstancia.vue';
 
 // const dados = ref([])
 
@@ -55,6 +56,7 @@ const navegacaoStore = useNavegacaoStore();
     <FiltroPesquisa v-if="navegacaoStore.paginaAtual=='Pesquisar'" />
 <ConsultaEstoque v-if="navegacaoStore.paginaAtual=='Pesquisar'" />
 <Modificacao_usuario v-if="navegacaoStore.paginaAtual=='Add_um_frasco' || navegacaoStore.paginaAtual=='Editar_o_frasco'" />
+<CatalogoSubstancia v-if="navegacaoStore.paginaAtual=='Catalogo_Substancia'"></CatalogoSubstancia>
   </div>
   <Login v-else />
   
