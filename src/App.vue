@@ -10,6 +10,7 @@ import Login from './components/Login.vue';
 import LogOut from './components/LogOut.vue';
 import FiltroPesquisa from './components/FiltroPesquisa.vue';
 import CatalogoSubstancia from './components/CatalogoSubstancia.vue';
+import Localizacao from './components/Localizacao.vue';
 
 // const dados = ref([])
 
@@ -57,6 +58,7 @@ const navegacaoStore = useNavegacaoStore();
 <ConsultaEstoque v-if="navegacaoStore.paginaAtual=='Pesquisar'" />
 <Modificacao_usuario v-if="navegacaoStore.paginaAtual=='Add_um_frasco' || navegacaoStore.paginaAtual=='Editar_o_frasco'" />
 <CatalogoSubstancia v-if="navegacaoStore.paginaAtual=='Catalogo_Substancia'"></CatalogoSubstancia>
+<Localizacao v-if="navegacaoStore.paginaAtual=='Localizacao'"></Localizacao>
   </div>
   <Login v-else />
   
